@@ -1,0 +1,11 @@
+name             'chef-postgis'
+maintainer       'stephane LII'
+maintainer_email 'stephane.lii@informatique.gov.pf'
+license          'All rights reserved'
+description      'Installs/Configures chef-geoserver'
+long_description 'Installs/Configures chef-geoserver'
+version          '0.1.0'
+depends 'apt'
+depends 'database', '~>2.3.1'
+depends 'postgresql'
+
