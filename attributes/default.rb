@@ -1,0 +1,8 @@
+default['postgis']['database_root_password'] = 'toto'
+default['postgis']['database'] = 'dbexemple'
+default['postgis']['database_user'] = 'userexemple'
+default['postgis']['database_user_password'] = 'password'
+default['postgis']['src_link'] = 'http://10.0.0.78/soft/postgis-2.1.3.tar.gz'
+default['postgis']['directory']['src'] = '/opt/postgis/src'
+default['postgis']['bin'] = 'postgis-2.1.3.tar.gz'
+default['postgis']['base_postgis_created'] = '/opt/postgis/src/base_postgis_created'

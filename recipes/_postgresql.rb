@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-node.set['postgresql']['password']['postgres'] = 'toto'
+node.set['postgresql']['password']['postgres'] = node['postgis']['database_root_password']
 node.set['postgresql']['config']['listen_addresses'] = '*'
 node.set['postgresql']['pg_hba'] = [
    {
@@ -49,18 +49,25 @@ node.set['postgresql']['pg_hba'] = [
    },
    {
       type: 'host',
-      db: 'tefenua',
-      user: 'tefenua',
-      addr: '192.168.0.0/8',
+      db: node['postgis']['database'],
+      user: node['postgis']['database_user'],
+      addr: '192.168.0.1/32',
       method: 'md5'
    },
    {
       type: 'host',
       db: 'postgres',
       user: 'postgres',
-      addr: '192.168.0.0/8',
+      addr: '192.168.0.1/32',
       method: 'md5'
-   }
+   },
+   {
+      type: 'host',
+      db: node['postgis']['database'],
+      user: 'postgres',
+      addr: '192.168.0.1/32',
+      method: 'md5'
+   },
 ]
 # install the database software
 include_recipe 'postgresql::server'
@@ -72,24 +79,24 @@ postgresql_connection_info = {
    host: '127.0.0.1',
    port: 5432,
    username: 'postgres',
-   password: 'toto'
+   password: node['postgis']['database_root_password']
 }
 
-postgresql_database 'tefenua' do
+postgresql_database node['postgis']['database'] do
    connection postgresql_connection_info
    action :create
 end
 
-postgresql_database_user 'tefenua' do
+postgresql_database_user node['postgis']['database_user'] do
    connection postgresql_connection_info
-   password 'toto'
+   password  node['postgis']['database_user_password']
    action :create
 end
 
-postgresql_database_user 'tefenua' do
+postgresql_database_user  node['postgis']['database_user'] do
    connection postgresql_connection_info
-   password 'toto'
-   database_name 'tefenua'
+   password node['postgis']['database_user_password']
+   database_name node['postgis']['database']
    action :grant
 end
 

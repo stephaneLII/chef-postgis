@@ -14,38 +14,59 @@
   end
 end
 
-remote_file '/tmp/postgis-2.1.3.tar.gz' do
+directory node['postgis']['directory']['src'] do
+   owner 'root'
+   group 'root'
+   mode '0755'
+   action :create
+   recursive true
+end
+
+remote_file node['postgis']['directory']['src'] +'/' + node['postgis']['bin'] do
    mode '0644'
-   source 'http://10.0.0.78/soft/postgis-2.1.3.tar.gz'
+   source node['postgis']['src_link']
+   not_if { ::File.exist?(node['postgis']['directory']['src'] + '/' + node['postgis']['bin']) }
 end
 
-bash 'install-postgis' do
-  user 'root'
-  cwd "/tmp"
-  code <<-EOH
-    tar -xvzf /tmp/postgis-2.1.3.tar.gz
-    cd postgis-2.1.3
-    ./configure
-    make
-    make install
-  EOH
-end
-# create the database
-include_recipe 'database::postgresql'
+if !(File.exist?(node['postgis']['base_postgis_created']))
 
-postgresql_connection_info = {
-   host: '127.0.0.1',
-   port: 5432,
-   username: 'postgres',
-   password: 'toto'
-}
+   bash 'install-postgis' do
+     user 'root'
+     cwd "/tmp"
+     code <<-EOH
+       tar -xvzf /tmp/postgis-2.1.3.tar.gz
+       cd postgis-2.1.3
+       ./configure
+       make
+       make install
+     EOH
+   end
 
+   # load database Functions
+   #
+   include_recipe 'database::postgresql'
 
-# INSTALL POSTGIS ON DATABASE
-postgresql_database "enable-postgis_extension" do
-  connection postgresql_connection_info
-  database_name 'tefenua'
-  sql "CREATE EXTENSION postgis ; CREATE EXTENSION postgis_topology"
-  action :query
+   postgresql_connection_info = {
+      host: '127.0.0.1',
+      port: 5432,
+      username: 'postgres',
+      password: node['postgis']['database_root_password']
+   }
+
+   # INSTALL POSTGIS ON DATABASE
+   #
+   postgresql_database "enable-postgis_extension" do
+      connection postgresql_connection_info
+      database_name node['postgis']['database']
+      sql "CREATE EXTENSION postgis ; CREATE EXTENSION postgis_topology"
+      action :query
+   end
+
+   # INSTALL FLAG
+   #
+   file node['postgis']['base_postgis_created'] do
+	mode '0644'
+	action :create_if_missing
+   end
 end
 
