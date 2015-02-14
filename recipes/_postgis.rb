@@ -22,7 +22,7 @@ directory node['postgis']['directory']['src'] do
    recursive true
 end
 
-remote_file node['postgis']['directory']['src'] +'/' + node['postgis']['bin'] do
+remote_file node['postgis']['directory']['src'] + '/' + node['postgis']['bin'] do
    mode '0644'
    source node['postgis']['src_link']
    not_if { ::File.exist?(node['postgis']['directory']['src'] + '/' + node['postgis']['bin']) }
@@ -30,11 +30,13 @@ end
 
 if !(File.exist?(node['postgis']['base_postgis_created']))
 
+   untar_cmd = "tar -xvzf #{node['postgis']['directory']['src']}" + '/' + node['postgis']['bin']
+
    bash 'install-postgis' do
      user 'root'
      cwd "/tmp"
      code <<-EOH
-       tar -xvzf /tmp/postgis-2.1.3.tar.gz
+       #{untar_cmd}
        cd postgis-2.1.3
        ./configure
        make
