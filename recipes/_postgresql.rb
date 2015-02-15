@@ -51,21 +51,21 @@ node.set['postgresql']['pg_hba'] = [
       type: 'host',
       db: node['postgis']['database'],
       user: node['postgis']['database_user'],
-      addr: '192.168.0.1/32',
+      addr: '172.28.128.1/32',
       method: 'md5'
    },
    {
       type: 'host',
       db: 'postgres',
       user: 'postgres',
-      addr: '192.168.0.1/32',
+      addr: '172.28.128.1/32',
       method: 'md5'
    },
    {
       type: 'host',
       db: node['postgis']['database'],
       user: 'postgres',
-      addr: '192.168.0.1/32',
+      addr: '172.28.128.1/32',
       method: 'md5'
    },
 ]

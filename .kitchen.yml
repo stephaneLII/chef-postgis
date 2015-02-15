@@ -6,10 +6,18 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-12.04
-  - name: centos-6.4
+  - name: ubuntu
+    driver:
+      box: ubuntu-14.04-chef
+      box_url: http://bit.ly/dsi-ubuntu-1404-box
+      network:
+        - ['private_network', {ip: '172.28.128.3'}]
+      customize:
+        memory: 512
+        cpus: 1 
 
 suites:
   - name: default
     run_list:
+      - recipe[chef-postgis::default]
     attributes:
