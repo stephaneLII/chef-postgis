@@ -8,8 +8,8 @@
 #
 
 
-#%w( postgresql-server-dev-9.3 libxml2 libxml2-dev libgeos-3.4.2 libgeos-dev proj-bin libproj-dev gdal-bin libgdal-dev ).each do |pkg|
-%w( postgresql-server-dev-all libxml2 libxml2-dev libgeos-3.3.3 libgeos-dev proj-bin libproj-dev gdal-bin libgdal-dev ).each do |pkg|
+%w( postgresql-server-dev-9.3 libxml2 libxml2-dev libgeos-3.4.2 libgeos-dev proj-bin libproj-dev gdal-bin libgdal-dev ).each do |pkg|
+#%w( postgresql-server-dev-all libxml2 libxml2-dev libgeos-3.3.3 libgeos-dev proj-bin libproj-dev gdal-bin libgdal-dev ).each do |pkg|
   package pkg do
     action :install
   end
