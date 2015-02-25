@@ -7,5 +7,4 @@
 # All rights reserved - Do Not Redistribute
 #
 include_recipe "apt::default"
-include_recipe 'chef-postgis::_postgresql'
 include_recipe 'chef-postgis::_postgis'
