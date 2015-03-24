@@ -7,6 +7,28 @@
 # All rights reserved - Do Not Redistribute
 #
 
+package "add-apt-key" do
+   action :install
+end
+
+apt_repository "ubuntugis" do
+  uri "http://ppa.launchpad.net/ubuntugis/ubuntugis-unstable/ubuntu"
+  distribution node['lsb']['codename']
+  components ["main"]
+  keyserver "hkp://keyserver.ubuntu.com:80"
+  key "089EBE08314DF160"
+  deb_src true
+end
+
+apt_repository "georepublic" do
+  uri "http://ppa.launchpad.net/georepublic/pgrouting/ubuntu"
+  distribution node['lsb']['codename']
+  components ["main"]
+  keyserver "hkp://keyserver.ubuntu.com:80"
+  key "26568B05B65ADE33"
+  deb_src true
+end
+
 
 case node["platform"]
    when "debian"
@@ -16,7 +38,7 @@ case node["platform"]
          end
    end
    when "ubuntu"
-   %w( postgresql-server-dev-9.3 libxml2 libxml2-dev libgeos-3.4.2 libgeos-dev proj-bin libproj-dev gdal-bin libgdal-dev ).each do |pkg|
+   %w( postgresql-server-dev-9.3 postgresql-9.3-pgrouting libxml2 libxml2-dev libgeos-3.4.2 libgeos-dev proj-bin libproj-dev gdal-bin libgdal-dev ).each do |pkg|
          package pkg do
             action :install
          end
