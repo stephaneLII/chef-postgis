@@ -102,7 +102,7 @@ node['chef-postgis']['databases'].each do |database|
       postgresql_database "enable-postgis_extension" do
          connection postgresql_connection_info
          database_name database
-         sql "CREATE EXTENSION postgis ; CREATE EXTENSION postgis_topology ; CREATE EXTENSION pgrouting ; CREATE EXTENSION dblink ;"
+         sql "CREATE EXTENSION postgis ; CREATE EXTENSION postgis_topology ; CREATE EXTENSION pgrouting ; CREATE EXTENSION dblink;"
          action :query
       end
 
